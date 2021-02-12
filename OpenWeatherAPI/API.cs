@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace OpenWeatherAPI
 {
 	public class API
@@ -9,17 +11,23 @@ namespace OpenWeatherAPI
 			openWeatherAPIKey = apiKey;
 		}
 
-		public void UpdateAPIKey(string apiKey)
+		public CurrentWeather CurrentWeather(string queryStr)
 		{
-			openWeatherAPIKey = apiKey;
+			CurrentWeather newQuery = new CurrentWeather(openWeatherAPIKey, queryStr);
+			if (newQuery.ValidRequest) return newQuery;
+			return null;
 		}
 
-		//Returns null if invalid request
-		public Query Query(string queryStr)
+		public OneCall OneCall(double lat, double lon)
 		{
-			Query newQuery = new Query(openWeatherAPIKey, queryStr);
-			if (newQuery.ValidRequest)
-				return newQuery;
+			List<string> exclude = new List<string>();
+			return OneCall(lat, lon, exclude);
+		}
+
+		public OneCall OneCall(double lat, double lon, List<string> exclude)
+		{
+			OneCall oneCall = new OneCall(openWeatherAPIKey, lat, lon, exclude);
+			if (oneCall.ValidRequest) return oneCall;
 			return null;
 		}
 	}

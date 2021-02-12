@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace OpenWeatherAPI
 {
@@ -20,23 +20,13 @@ namespace OpenWeatherAPI
 			KelvinMaximum = max;
 			KelvinMinimum = min;
 
-			CelsiusCurrent = convertToCelsius(KelvinCurrent);
-			CelsiusMaximum = convertToCelsius(KelvinMaximum);
-			CelsiusMinimum = convertToCelsius(KelvinMinimum);
+			CelsiusCurrent = Utility.convertToCelsius(KelvinCurrent);
+			CelsiusMaximum = Utility.convertToCelsius(KelvinMaximum);
+			CelsiusMinimum = Utility.convertToCelsius(KelvinMinimum);
 
-			FahrenheitCurrent = convertToFahrenheit(CelsiusCurrent);
-			FahrenheitMaximum = convertToFahrenheit(CelsiusMaximum);
-			FahrenheitMinimum = convertToFahrenheit(CelsiusMinimum);
-		}
-
-		private double convertToFahrenheit(double celsius)
-		{
-			return Math.Round(((9.0 / 5.0) * celsius) + 32, 3);
-		}
-
-		private double convertToCelsius(double kelvin)
-		{
-			return Math.Round(kelvin - 273.15, 3);
+			FahrenheitCurrent = Utility.convertToFahrenheit(CelsiusCurrent);
+			FahrenheitMaximum = Utility.convertToFahrenheit(CelsiusMaximum);
+			FahrenheitMinimum = Utility.convertToFahrenheit(CelsiusMinimum);
 		}
 	}
 }

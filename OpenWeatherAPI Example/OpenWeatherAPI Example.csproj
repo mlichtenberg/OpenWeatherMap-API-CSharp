@@ -7,8 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="OpenWeatherAPI">
-      <HintPath>..\OpenWeatherAPI\bin\Debug\OpenWeatherAPI.dll</HintPath>
+      <HintPath>..\OpenWeatherAPI\bin\Debug\netstandard2.0\OpenWeatherAPI.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -1,4 +1,5 @@
-﻿using System;
+using OpenWeatherAPI;
+using System;
 
 namespace OpenWeatherAPI_Example
 {
@@ -6,7 +7,7 @@ namespace OpenWeatherAPI_Example
     {
         static void Main(string[] args)
         {
-            var client = new OpenWeatherAPI.API("YOUR-API-KEY");
+            var client = new OpenWeatherAPI.API("64a1680aae99a5eb96c65b341384ddce");
 
             Console.WriteLine("OpenWeatherAPI Example Application");
             Console.WriteLine();
@@ -16,9 +17,16 @@ namespace OpenWeatherAPI_Example
             Console.WriteLine();
 
             Console.WriteLine($"Fetching weather data for '{city}'");
-            var results = client.Query(city);
+            var currentWeatherResults = client.CurrentWeather(city);
 
-            Console.WriteLine($"The temperature in {city} is {results.Main.Temperature.FahrenheitCurrent}F. There is {results.Wind.SpeedFeetPerSecond} f/s wind in the {results.Wind.Direction} direction.");
+            Console.WriteLine($"The temperature in {city} is {currentWeatherResults.Main.Temperature.FahrenheitCurrent}F. There is {currentWeatherResults.Wind.SpeedFeetPerSecond} f/s wind in the {currentWeatherResults.Wind.Direction} direction.");
+
+			var oneCallResults = client.OneCall(currentWeatherResults.Coord.Latitude, currentWeatherResults.Coord.Longitude);
+
+			foreach (Day day in oneCallResults.Daily)
+			{
+				Console.WriteLine($"{day.Dt} : {day.Temp.FahrenheitMaximum}/{day.Temp.FahrenheitMinimum} ({day.Weathers[0].Description})");
+			}
 
             Console.ReadLine();
         }
