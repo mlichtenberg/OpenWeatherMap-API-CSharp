@@ -21,11 +21,19 @@ namespace OpenWeatherAPI
 		public string Name { get; }
 		public int Cod { get; }
 
-		public CurrentWeather(string apiKey, string queryStr)
+		public CurrentWeather(string apiKey, string queryStr, UnitsEnum units)
 		{
+			string unitsString;
+			switch (units)
+			{
+				case UnitsEnum.Metric: { unitsString = "metric"; break; }
+				case UnitsEnum.Imperial: { unitsString = "imperial"; break; }
+				default: { unitsString = "standard"; break; }
+			}
+
 			JObject jsonData;
 			using (var client = new System.Net.WebClient())
-				jsonData = JObject.Parse(client.DownloadString($"http://api.openweathermap.org/data/2.5/weather?appid={apiKey}&q={queryStr}"));
+				jsonData = JObject.Parse(client.DownloadString($"http://api.openweathermap.org/data/2.5/weather?appid={apiKey}&q={queryStr}&units={unitsString}"));
 
 			if (jsonData.SelectToken("cod").ToString() == "200")
 			{

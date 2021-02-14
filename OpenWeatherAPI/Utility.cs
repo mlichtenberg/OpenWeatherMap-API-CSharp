@@ -22,6 +22,14 @@ namespace OpenWeatherAPI
 		North_North_West,
 		Unknown
 	}
+
+	public enum UnitsEnum
+	{
+		Standard,
+		Metric,
+		Imperial
+	}
+
 	public static class ExcludeEnum
 	{
 		public static string Current { get; } = "current";
@@ -37,16 +45,6 @@ namespace OpenWeatherAPI
 		{
 			DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 			return dt.AddSeconds(unixTime).ToLocalTime();
-		}
-
-		public static double convertToFahrenheit(double celsius)
-		{
-			return Math.Round(((9.0 / 5.0) * celsius) + 32, 3);
-		}
-
-		public static double convertToCelsius(double kelvin)
-		{
-			return Math.Round(kelvin - 273.15, 3);
 		}
 
 		public static string DirectionEnumToString(DirectionEnum dir)

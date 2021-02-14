@@ -9,8 +9,8 @@ namespace OpenWeatherAPI
 	public class OneCall
 	{
 		public bool ValidRequest { get; }
-		public double Lat { get; set; }
-		public double Lon { get; set; }
+		public double Latitude { get; set; }
+		public double Longitude { get; set; }
 		public string Timezone { get; set; }
 		public int TimezoneOffset { get; set; }
 		public List<Alert> Alerts{ get; } = new List<Alert>();
@@ -19,7 +19,7 @@ namespace OpenWeatherAPI
 		public List<Day> Daily { get; } = new List<Day>();
 		public List<Minute> Minutely { get; } = new List<Minute>();
 
-		public OneCall(string apiKey, double lat, double lon, List<string> exclude)
+		public OneCall(string apiKey, double lat, double lon, List<string> exclude, UnitsEnum units)
 		{
 			if (exclude == null) exclude = new List<string>();
 
@@ -27,12 +27,20 @@ namespace OpenWeatherAPI
 			{
 				string excludeList = string.Join(",", exclude.ToArray());
 
+				string unitsString;
+				switch (units)
+				{
+					case UnitsEnum.Metric: { unitsString = "metric"; break; }
+					case UnitsEnum.Imperial: { unitsString = "imperial"; break; }
+					default: { unitsString = "standard"; break; }
+				}
+
 				JObject jsonData;
 				using (var client = new System.Net.WebClient())
-					jsonData = JObject.Parse(client.DownloadString($"http://api.openweathermap.org/data/2.5/onecall?appid={apiKey}&lat={lat}&lon={lon}&exclude={excludeList}"));
+					jsonData = JObject.Parse(client.DownloadString($"http://api.openweathermap.org/data/2.5/onecall?appid={apiKey}&lat={lat}&lon={lon}&exclude={excludeList}&units={unitsString}"));
 
-				Lat = double.Parse(jsonData.SelectToken("lat").ToString(), CultureInfo.InvariantCulture);
-				Lon = double.Parse(jsonData.SelectToken("lon").ToString(), CultureInfo.InvariantCulture);
+				Latitude = double.Parse(jsonData.SelectToken("lat").ToString(), CultureInfo.InvariantCulture);
+				Longitude = double.Parse(jsonData.SelectToken("lon").ToString(), CultureInfo.InvariantCulture);
 				Timezone = jsonData.SelectToken("timezone").ToString();
 				TimezoneOffset = int.Parse(jsonData.SelectToken("timezone_offset").ToString(), CultureInfo.InvariantCulture);
 

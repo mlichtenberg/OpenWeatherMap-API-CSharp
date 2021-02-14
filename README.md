@@ -1,25 +1,23 @@
 # OpenWeatherMap-API - C# Library
 ### Overview
-This library takes what openweathermap api returns in JSON, and converts it to C# objects for easy interaction with in C# projects.  It supports (most/all) of the returned data the API returns in JSON. The JSON api returned properties are sometimes present, and sometimes not.  I have done my best to detect properties that are prone to not being presented, and assigning those values null.  You should check certain properties for null vals before assigning under the assumption they are good values.  It is also possible I missed values, and the C# library may nullref.  This project was originally created to be used in a Twitch chat bot, but has been released for others to use.
+This library takes what the openweathermap "current" (https://openweathermap.org/current) and "onecall" (https://openweathermap.org/api/one-call-api) apis return in JSON, and converts it to C# objects for easy interaction with in C# projects.  It supports (most/all) of the returned data the APIs return in JSON.  Always check properties for null values.
 
-### Returned Data
+### CurrentWeather Returned Data
+- Base - OpenWeather internal parameter
 - Clouds
   * All - Level of cloudiness (percentage of cloud cover?)
-- Coords
+- Cod - OpenWeather internal parameter
+- Coord
   * Longitude - Query location longitude
   * Latitude - Query location latitude
+- ID - OpenWeather City ID
 - Main
-  * CelsiusCurrent - Returns converted Kelvin values of current temperature in Centigrade
-  * FahrenheitCurrent - Returns converted Kelvin values of current temperature in Fahrenheight
-  * KelvinCurrent - Returns raw openweather API values for temperature in Kelvin
-  * CelsiusMinimum - Returns converted Kelvin values of minimum temperature in Centigrade
-  * CelsiusMaximum - Returns converted Kelvin values of maximum temperature in Centigrade
-  * FahrenheitMinimum - Returns converted Kelvin values of minimum temperature in Fahrenheight
-  * FahrenheitMaximum - Returns converted Kelvin values of maximum temperature in Fahrenheight
-  * KelvinMinimum - Returns raw openweather API values for minimum temperature in Kelvin
-  * KelvinMaximum - Returns raw openweather API values for maximum temperatures in Kelvin
-  * SeaLevel - Returns atmospheric pressure on sea level, hPa, raw from openweather API
+  * Current - Current temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * Minimum - Minimum temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
   * GroundLevel - Returns atmospheric pressure on ground level, hPa, raw from openweather API
+  * Maximum - Maximum temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * SeaLevel - Returns atmospheric pressure on sea level, hPa, raw from openweather API
+- Name - City name
 - Rain
   * 3h - Returns rain related data for the last 3 hours at query location (if available).
 - Snow
@@ -31,25 +29,116 @@ This library takes what openweathermap api returns in JSON, and converts it to C
   * Country - Country code of given query location
   * Sunrise - Returns DateTime for sunrise converted from openweather API returned unix time.
   * Sunset - Returns DateTime for sunset converted from openweather API returned unix time.
-- Weather
+- Visibility - Current visibility
+- Weathers
   * ID - System related parameter, avoid usage
   * Main - Main description of the weather (IE rain, snow, etc.)
   * Description - Description of main parameter (heavy intensity rain, etc)
   * Icon - Weather icon ID
 - Wind
-  * SpeedMetersPerSecond -  Gives wind speed in raw values returned by openweathermap api, in meters per second
-  * SpeedFeetPerSecond - Gives wind speed in converted values in feet per second
+  * Speed - Gives wind speed in raw values returned by openweathermap api, in meters per second or miles per hour
   * Direction - Returns DirectionEnum with details of direction of wind on basis of degree
   * Degree - Returns raw 360-oriented degree returned by openweathermap api
-  * Gust - Returns speed of wind gusts in meters per second
+  * Gust - Returns speed of wind gusts in meters per second or miles per hour
+
+### OneCall Returned Data
+- Alerts
+  * Description - Description of the alert
+  * End - Date and time of the end of hte alert, UTC
+  * Event - Alert event name
+  * SenderName - Name of the alert source
+  * Start - Date and time of the start of the alert, UTC
+- Current
+  * Clouds - Cloudiness percentage
+  * DewPoint - Atmospheric temperature below which water droplets begin to condense and dew can form. (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * DateTime - Current time, UTC
+  * FeelsLike - Current "feels-like" temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * Humidity - Percent humidity
+  * Pressure - Atmospheric pressure, hPa
+  * Sunrise - Sunrise time, UTC
+  * Sunset - Sunset time, UTC
+  * Temperature - Temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * Uvi - Current UV index
+  * Visibility - Current visibility
+  * Weathers
+    + ID - System related parameter, avoid usage
+    + Main - Main description of the weather (IE rain, snow, etc.)
+    + Description - Description of main parameter (heavy intensity rain, etc)
+    + Icon - Weather icon ID
+  * Wind
+    + Speed - Gives wind speed in raw values returned by openweathermap api (Units – standard and metric: meters/second, imperial: miles/hour)
+    + Direction - Returns DirectionEnum with details of direction of wind on basis of degree
+    + Degree - Returns raw 360-oriented degree returned by openweathermap api
+    + Gust - Returns speed of wind gusts (Units – standard and metric: meters/second, imperial: miles/hour)
+- Daily
+  * Clouds - Cloudiness percentage
+  * DewPoint - Atmospheric temperature below which water droplets begin to condense and dew can form. (Units – default: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * DateTime - Date of the forecast data, UTC
+  * FeelsLike
+    + Day - Daytime temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+    + Night - Nighttime temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+    + Evening - Evening temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+    + Morning - Morning temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * Humidity - Percent humidity
+  * Pop - Probability of precipitation
+  * Pressure - Atmospheric pressure, hPa
+  * Sunrise - Sunrise time, UTC
+  * Sunset - Sunset time, UTC
+  * Temp
+    + Day - Day temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+    + Minimum - Minimum temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+    + Maximum - Maximum temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+    + Night - Night temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+    + Evening - Evening temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+    + Morning - Morning temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * Uvi - Current UV index
+  * Weathers
+    + ID - System related parameter, avoid usage
+    + Main - Main description of the weather (IE rain, snow, etc.)
+    + Description - Description of main parameter (heavy intensity rain, etc)
+    + Icon - Weather icon ID
+  * Wind
+    + Speed - Gives wind speed in raw values returned by openweathermap api (Units – standard and metric: meters/second, imperial: miles/hour)
+    + Direction - Returns DirectionEnum with details of direction of wind on basis of degree
+    + Degree - Returns raw 360-oriented degree returned by openweathermap api
+    + Gust - Returns speed of wind gusts (Units – standard and metric: meters/second, imperial: miles/hour)
+- Hourly
+  * Clouds - Cloudiness percentage
+  * DewPoint - Atmospheric temperature below which water droplets begin to condense and dew can form. (Units – default: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * DateTime - Time of the forecast data, UTC
+  * FeelsLike - Current "feels-like" temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * Humidity - Percent humidity
+  * Pop - Probability of precipitation
+  * Pressure - Atmospheric pressure, hPa
+  * Temperature - Temperature (Units – standard: kelvin, metric: Celsius, imperial: Fahrenheit)
+  * Uvi - Current UV index
+  * Visibility - Current visibility
+  * Weathers
+    + ID - System related parameter, avoid usage
+    + Main - Main description of the weather (IE rain, snow, etc.)
+    + Description - Description of main parameter (heavy intensity rain, etc)
+    + Icon - Weather icon ID
+  * Wind
+    + Speed - Gives wind speed in raw values returned by openweathermap api (Units – standard and metric: meters/second, imperial: miles/hour)
+    + Direction - Returns DirectionEnum with details of direction of wind on basis of degree
+    + Degree - Returns raw 360-oriented degree returned by openweathermap api
+    + Gust - Returns speed of wind gusts (Units – standard and metric: meters/second, imperial: miles/hour)
+- Longitude - Query location longitude
+- Latitude - Query location latitude
+- Minutely
+  + DateTime - Time of the forecast data, UTC
+  + Precipitation - Precipitation volume (Units – standard and metric: millimeters, imperial: inches)
+- Timezone - Timezone name of the forecast location
+- TimezoneOffset - Timezone shift from UTC, in seconds
+
 ### Added Functionality
-- Additional Main values:  By default the openweathermap API returns just Kelvin temperatures.  I have created properties in the Main class that returns equivalent Celsius and Fahrenheight
+- The openweathermap APIs return just Kelvin temperatures; this library include Celcius and Fahrenheit values.
 - DirectionEnum - Added direction enum in Wind class that is set in constructor on the basis of degree double
 - directionEnumToString(DirectionEnum dir) - Returns string value of wind direction on the basis of passed in DirectionEnum
 
 ### Installing
 1. Clone this code
-   - `git clone https://github.com/swiftyspiffy/OpenWeatherMap-API-CSharp.git`
+   - `git clone https://github.com/mlichtenberg/OpenWeatherMap-API-CSharp.git`
 2. Open the code in VS
 3. Build the code base
 4. In your project that's using this code, reference the built DLL from the previous step:
@@ -59,13 +148,13 @@ This library takes what openweathermap api returns in JSON, and converts it to C
 
 ### Example Usage
 ```csharp
-OpenWeatherAPI.OpenWeatherAPI openWeatherAPI = new OpenWeatherAPI.OpenWeatherAPI("my open weather api key");
-OpenWeatherAPI.Query query = openWeatherAPI.query("city/location query");
-Console.WriteLine(string.Format("The temperature in {0}, {1} is currently {2} °F", query.Name,query.Sys.Country, query.Main.Temperature.FahrenheitCurrent));
+var openWeatherAPI = new OpenWeatherAPI.API("my open weather api key");
+var current = openWeatherAPI.CurrentWeather("city/location query", OpenWeatherAPI.UnitsEnum.Imperial);
+Console.WriteLine(string.Format("The temperature in {0}, {1} is currently {2} °F", current.Name,current.Sys.Country, current.Main.Temperature.Current));
 ```
 
 ### Sample Project
-This repository also has a sample project. Find it here: https://github.com/swiftyspiffy/OpenWeatherMap-API-CSharp/tree/master/OpenWeatherAPI%20Example
+This repository also has a sample project. Find it here: https://github.com/mlichtenberg/OpenWeatherMap-API-CSharp/tree/master/OpenWeatherAPI%20Example
 
 ### Credits and Libraries Utilized
 - Newtonsoft.Json - JSON parsing class. 
@@ -73,7 +162,7 @@ This repository also has a sample project. Find it here: https://github.com/swif
 ### License
 The MIT License (MIT)
 
-Copyright (c) 2015 swiftyspiffy
+Copyright (c) 2021 mlichtenberg
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

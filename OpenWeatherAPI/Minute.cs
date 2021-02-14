@@ -6,7 +6,7 @@ namespace OpenWeatherAPI
 {
 	public class Minute
 	{
-		public DateTime Dt { get; }
+		public DateTime DateTime { get; }
 		public double Precipitation { get; }
 
 		public Minute(JToken minuteData)
@@ -14,7 +14,7 @@ namespace OpenWeatherAPI
 			if (minuteData is null)
 				throw new ArgumentNullException(nameof(minuteData));
 
-			Dt = Utility.convertUnixToDateTime(double.Parse(minuteData.SelectToken("dt").ToString(), CultureInfo.InvariantCulture));
+			DateTime = Utility.convertUnixToDateTime(double.Parse(minuteData.SelectToken("dt").ToString(), CultureInfo.InvariantCulture));
 			Precipitation = double.Parse(minuteData.SelectToken("precipitation").ToString(), CultureInfo.InvariantCulture);
 		}
 	}

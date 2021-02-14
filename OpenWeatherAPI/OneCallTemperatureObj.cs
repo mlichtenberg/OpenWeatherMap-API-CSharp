@@ -8,24 +8,12 @@ namespace OpenWeatherAPI
 {
 	public class OneCallTemperatureObj
 	{
-		public double CelsiusDay { get; }
-		public double FahrenheitDay { get; }
-		public double KelvinDay { get; }
-		public double CelsiusMinimum { get; }
-		public double CelsiusMaximum { get; }
-		public double FahrenheitMinimum { get; }
-		public double FahrenheitMaximum { get; }
-		public double KelvinMinimum { get; }
-		public double KelvinMaximum { get; }
-		public double CelsiusNight { get; }
-		public double FahrenheitNight { get; }
-		public double KelvinNight { get; }
-		public double CelsiusEvening { get; }
-		public double FahrenheitEvening { get; }
-		public double KelvinEvening { get; }
-		public double CelsiusMorning { get; }
-		public double FahrenheitMorning { get; }
-		public double KelvinMorning { get; }
+		public double Day { get; }
+		public double Minimum { get; }
+		public double Maximum { get; }
+		public double Night { get; }
+		public double Evening { get; }
+		public double Morning { get; }
 
 		public OneCallTemperatureObj(JToken tempData)
 		{
@@ -34,39 +22,18 @@ namespace OpenWeatherAPI
 
 			if (tempData.SelectToken("min") != null)
 			{
-				var min = double.Parse(tempData.SelectToken("min").ToString(), CultureInfo.InvariantCulture);
-				KelvinMinimum = min;
-				CelsiusMinimum = Utility.convertToCelsius(KelvinMinimum);
-				FahrenheitMinimum = Utility.convertToFahrenheit(CelsiusMinimum);
+				Minimum = double.Parse(tempData.SelectToken("min").ToString(), CultureInfo.InvariantCulture);
 			}
 
 			if (tempData.SelectToken("max") != null)
 			{
-				var max = double.Parse(tempData.SelectToken("max").ToString(), CultureInfo.InvariantCulture);
-				KelvinMaximum = max;
-				CelsiusMaximum = Utility.convertToCelsius(KelvinMaximum);
-				FahrenheitMaximum = Utility.convertToFahrenheit(CelsiusMaximum);
+				Maximum = double.Parse(tempData.SelectToken("max").ToString(), CultureInfo.InvariantCulture);
 			}
 
-			var day = double.Parse(tempData.SelectToken("day").ToString(), CultureInfo.InvariantCulture);
-			var night = double.Parse(tempData.SelectToken("night").ToString(), CultureInfo.InvariantCulture);
-			var eve = double.Parse(tempData.SelectToken("eve").ToString(), CultureInfo.InvariantCulture);
-			var morn = double.Parse(tempData.SelectToken("morn").ToString(), CultureInfo.InvariantCulture);
-
-			KelvinDay = day;
-			KelvinNight = night;
-			KelvinEvening = eve;
-			KelvinMorning = morn;
-
-			CelsiusDay = Utility.convertToCelsius(KelvinDay);
-			CelsiusNight = Utility.convertToCelsius(KelvinNight);
-			CelsiusEvening = Utility.convertToCelsius(KelvinEvening);
-			CelsiusMorning = Utility.convertToCelsius(KelvinMorning);
-
-			FahrenheitDay = Utility.convertToFahrenheit(CelsiusDay);
-			FahrenheitNight = Utility.convertToFahrenheit(CelsiusNight);
-			FahrenheitEvening = Utility.convertToFahrenheit(CelsiusEvening);
-			FahrenheitMorning = Utility.convertToFahrenheit(CelsiusMorning);
+			Day = double.Parse(tempData.SelectToken("day").ToString(), CultureInfo.InvariantCulture);
+			Night = double.Parse(tempData.SelectToken("night").ToString(), CultureInfo.InvariantCulture);
+			Evening = double.Parse(tempData.SelectToken("eve").ToString(), CultureInfo.InvariantCulture);
+			Morning = double.Parse(tempData.SelectToken("morn").ToString(), CultureInfo.InvariantCulture);
 		}
 	}
 }

@@ -8,18 +8,17 @@ namespace OpenWeatherAPI
 {
 	public class Day
 	{
-		public DateTime Dt { get; }
+		public DateTime DateTime { get; }
 		public DateTime Sunrise { get; }
 		public DateTime Sunset { get; }
 		public int Pressure { get; }
 		public int Humidity { get; }
 		public double DewPoint { get; }
-		public double WindSpeed { get; }
-		public int WindDeg { get; }
 		public int Clouds { get; }
 		public double Pop { get; }
 		public double Uvi { get; }
 		public List<Weather> Weathers { get; } = new List<Weather>();
+		public Wind Wind { get; }
 		public OneCallTemperatureObj Temp { get; }
 		public OneCallTemperatureObj FeelsLike { get; }
 
@@ -28,14 +27,13 @@ namespace OpenWeatherAPI
 			if (dayData is null)
 				throw new ArgumentNullException(nameof(dayData));
 
-			Dt = Utility.convertUnixToDateTime(double.Parse(dayData.SelectToken("dt").ToString(), CultureInfo.InvariantCulture));
+			DateTime = Utility.convertUnixToDateTime(double.Parse(dayData.SelectToken("dt").ToString(), CultureInfo.InvariantCulture));
 			Sunrise = Utility.convertUnixToDateTime(double.Parse(dayData.SelectToken("sunrise").ToString(), CultureInfo.InvariantCulture));
 			Sunset = Utility.convertUnixToDateTime(double.Parse(dayData.SelectToken("sunset").ToString(), CultureInfo.InvariantCulture));
 			Pressure = int.Parse(dayData.SelectToken("pressure").ToString(), CultureInfo.InvariantCulture);
 			Humidity = int.Parse(dayData.SelectToken("humidity").ToString(), CultureInfo.InvariantCulture);
 			DewPoint = double.Parse(dayData.SelectToken("dew_point").ToString(), CultureInfo.InvariantCulture);
-			WindSpeed = double.Parse(dayData.SelectToken("wind_speed").ToString(), CultureInfo.InvariantCulture);
-			WindDeg = int.Parse(dayData.SelectToken("wind_deg").ToString(), CultureInfo.InvariantCulture);
+			Wind = new Wind(dayData);
 			Clouds = int.Parse(dayData.SelectToken("clouds").ToString(), CultureInfo.InvariantCulture);
 			Pop = double.Parse(dayData.SelectToken("pop").ToString(), CultureInfo.InvariantCulture);
 			Uvi = double.Parse(dayData.SelectToken("uvi").ToString(), CultureInfo.InvariantCulture);
