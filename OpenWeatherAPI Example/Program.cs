@@ -7,7 +7,7 @@ namespace OpenWeatherAPI_Example
     {
         static void Main(string[] args)
         {
-            var client = new OpenWeatherAPI.API("64a1680aae99a5eb96c65b341384ddce");
+            var client = new OpenWeatherAPI.API(System.Configuration.ConfigurationManager.AppSettings["APIKey"]);
 
             Console.WriteLine("OpenWeatherAPI Example Application");
             Console.WriteLine();
